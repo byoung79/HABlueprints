@@ -262,6 +262,10 @@ blueprint:
 mode: queued
 max: 10
 
+# Template triggers can only use trigger_variables (not `variables`)
+trigger_variables:
+  extra_sensors_list: !input extra_sensors
+
 triggers:
   - id: person
     platform: state
@@ -296,8 +300,6 @@ triggers:
 variables:
   camera_entity: !input camera
   cam_name: "{{ state_attr(camera_entity, 'friendly_name') or camera_entity }}"
-  extra_sensors_list: !input extra_sensors
-
   notify_device_ids: !input notify_devices
   notify_ids_list: >-
     {{ notify_device_ids if notify_device_ids is iterable else [notify_device_ids] }}
@@ -432,7 +434,7 @@ actions:
           - variables:
               title_final: "{{ custom_title_text | trim }}"
               event_text: "{{ 'Person detected' if trigger.id == 'person' else 'Event' }}"
-              msg_default: "{{ 'Person detected at ' ~ cam_name }}"
+              msg_default: "{{ ('Person detected' if trigger.id == 'person' else 'Event detected') ~ ' at ' ~ cam_name }}"
               msg_final: >-
                 {% set base = custom_message_text | trim %}
                 {% if base == '' %}
