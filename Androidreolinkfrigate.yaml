@@ -10,7 +10,13 @@ blueprint:
     Body tap opens the exact camera using a Reolink deep link.
     Choose the deep link type that matches your setup: NVR, Home Hub Pro,
     or an individual camera (SD card).
+
+    Credit: based on the original blueprint by NS086
+    (https://github.com/NS086/HomeAssistantBlueprints).
+    Modified to add selectable deep link types (NVR, Home Hub Pro,
+    individual camera, URL only).
   domain: automation
+  source_url: https://raw.githubusercontent.com/NS086/HomeAssistantBlueprints/refs/heads/main/Androidreolinkfrigate.yaml
 
   input:
     person_sensor:
@@ -112,7 +118,12 @@ blueprint:
       selector: { text: {} }
 
     reolink_devname:
-      name: Reolink device name
+      name: Reolink device name (NVR deep link type only)
+      description: >
+        The name of the NVR exactly as shown in the Reolink app's device list.
+        Only used by the "NVR (push-style intent)" deep link type.
+        Ignored for Home Hub Pro, Individual camera and No Reolink deep link
+        (leave the default).
       default: "NVR"
       selector: { text: {} }
 
